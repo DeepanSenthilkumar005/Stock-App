@@ -1,0 +1,85 @@
+{
+    "items": {
+      "paper": [
+        {
+          "type": "A4",
+          "quantity": 50
+        },
+        {
+          "type": "A3",
+          "quantity": 30
+        },
+        {
+          "type": "A2",
+          "quantity": 20
+        },
+        {
+          "type": "Letter",
+          "quantity": 40
+        },
+        {
+          "type": "Legal",
+          "quantity": 25
+        }
+      ],
+      "pencil": [
+        {
+          "brand": "Faber-Castell",
+          "hardness": "HB",
+          "quantity": 100
+        },
+        {
+          "brand": "Staedtler",
+          "hardness": "2B",
+          "quantity": 80
+        },
+        {
+          "brand": "Camlin",
+          "hardness": "4B",
+          "quantity": 60
+        }
+      ],
+      "eraser": [
+        {
+          "brand": "Apsara",
+          "color": "White",
+          "quantity": 50
+        },
+        {
+          "brand": "Nataraj",
+          "color": "Pink",
+          "quantity": 40
+        }
+      ],
+      "pen": [
+        {
+          "brand": "Reynolds",
+          "color": "Blue",
+          "quantity": 200
+        },
+        {
+          "brand": "Cello",
+          "color": "Black",
+          "quantity": 150
+        },
+        {
+          "brand": "Parker",
+          "color": "Red",
+          "quantity": 100
+        }
+      ],
+      "notebook": [
+        {
+          "size": "A5",
+          "pages": 200,
+          "quantity": 50
+        },
+        {
+          "size": "A4",
+          "pages": 300,
+          "quantity": 40
+        }
+      ]
+    }
+  }
+  

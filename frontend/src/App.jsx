@@ -1,8 +1,11 @@
 import React from 'react'
+import DashBoard from './components/DashBoard'
 
 function App() {
   return (
-    <div className='text-green-500'>App</div>
+    <>
+      <DashBoard />
+    </>
   )
 }
 
