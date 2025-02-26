@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { SlClose } from "react-icons/sl";
 function DashBoard() {
   const [searchText, setSearchText] = useState("");
   const [refresh, setRefresh] = useState(true);
@@ -12,7 +13,8 @@ function DashBoard() {
   const [dropDownCategory, setDropDownCategory] = useState([]);
   const [newType, setNewType] = useState("");
   const [newQuantity, setNewQuantity] = useState("");
-  const backendUrl = "http://localhost:8000/api/";
+  // const backendUrl = "http://localhost:8000/api/";
+  const backendUrl = "https://stock-app-f3z4.onrender.com/api/";
 
   useEffect(() => {
     fetch(backendUrl)
@@ -143,7 +145,7 @@ function DashBoard() {
         className="bg-blue-500 text-white p-2 rounded-md my-3 cursor-pointer w-full hover:bg-blue-600"
         onClick={() => setAddPage(()=>!addPage)}
       >
-        { !addPage ? "Add New Item" : "Close The Page"}
+        { !addPage ? "Add New Item" : (<p>Close The Add Page</p>)}
       </button>
 
       {addPage && (
