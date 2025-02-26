@@ -64,8 +64,8 @@ function DashBoard() {
     }
   }
 
-  async function deleteItem(id) {
-    if(window.confirm("Enter Ok to Delete"))
+  async function deleteItem(id, name) {
+    if(window.confirm(`Enter Ok to Delete ${name}`))
     {
 
         try {
@@ -225,12 +225,12 @@ function DashBoard() {
                   <>
                     <p className="text-gray-200 flex-1 text-center">{item.types}</p>
                     <p className="text-gray-200 flex-1 text-center">{item.quantity}</p>
-                    <button className="bg-blue-500 p-2 rounded-full cursor-pointer" onClick={() => toggleEdit(item._id, item.category, item.types, item.quantity)}>
+                    <button className="bg-blue-500 p-3 rounded-full cursor-pointer" onClick={() => toggleEdit(item._id, item.category, item.types, item.quantity)}>
                       <FaEdit className="text-white" />
                     </button>
                   </>
                 )}
-                <button className="bg-red-500 p-2 ms-2 rounded-full cursor-pointer" onClick={() => deleteItem(item._id)}>
+                <button className="bg-red-500 ms-3 p-3 rounded-full cursor-pointer" onClick={() => deleteItem(item._id,item.types)}>
                   <FaTrash className="text-white" />
                 </button>
               </div>
