@@ -1,0 +1,135 @@
+import { useState, useEffect, useRef } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+
+function DashBoard() {
+  const [searchText, setSearchText] = useState("");
+  const [refresh, setRefresh] = useState(true);
+  const [data, setData] = useState([]);
+  const [editedItems, setEditedItems] = useState({});
+  const [editing, setEditing] = useState({});
+  const addItemRef = useRef(null);
+
+  const backendUrl = "http://localhost:8000/api/";
+
+  useEffect(() => {
+    fetch(backendUrl)
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error("Error fetching data:", error));
+  }, [refresh]);
+
+  function handleSearch(e) {
+    setSearchText(e.target.value);
+  }
+
+  function updateQuantity(category, type, change) {
+    if (!editing[`${category}-${type}`]) return;
+    setData((prevData) =>
+      prevData.map((item) =>
+        item.category === category && item.types === type
+          ? { ...item, quantity: item.quantity + change }
+          : item
+      )
+    );
+    setEditedItems((prev) => ({ ...prev, [`${category}-${type}`]: true }));
+  }
+
+  async function saveChanges(category, type, quantity) {
+    try {
+      await fetch(backendUrl, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, types: type, quantity }),
+      });
+      setEditedItems((prev) => {
+        const newEditedItems = { ...prev };
+        delete newEditedItems[`${category}-${type}`];
+        return newEditedItems;
+      });
+      setEditing((prev) => ({ ...prev, [`${category}-${type}`]: false }));
+    } catch (error) {
+      console.error("Error saving changes:", error);
+    }
+  }
+
+  async function deleteItem(category, type) {
+    try {
+      await fetch(backendUrl, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, types: type }),
+      });
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  }
+
+  function toggleEdit(category, type) {
+    setEditing((prev) => ({ ...prev, [`${category}-${type}`]: !prev[`${category}-${type}`] }));
+  }
+
+  return (
+    <section className="DashBoard_Page bg-gray-900 min-h-screen w-full p-4 text-white">
+      <div className="header w-full flex items-center mx-auto">
+        <input
+          type="text"
+          onChange={handleSearch}
+          value={searchText}
+          name="search"
+          className="mx-auto rounded-md text-black p-2 shadow-md w-full border border-gray-400"
+          placeholder="Search..."
+          autoComplete="off"
+        />
+      </div>
+
+      <button
+        type="button"
+        className="bg-blue-500 text-white p-2 rounded-md my-3 cursor-pointer w-full hover:bg-blue-600"
+        onClick={() => setRefresh((prev) => !prev)}
+      >
+        Refresh Data
+      </button>
+
+      <ul className="text-white w-full flex flex-col mx-auto mt-4">
+        {data.length > 0 ? (
+          data.reduce((acc, item) => {
+            let categoryIndex = acc.findIndex((c) => c.category === item.category);
+
+            if (categoryIndex === -1) {
+              acc.push({ category: item.category, types: [{ type: item.types, quantity: item.quantity }] });
+            } else {
+              acc[categoryIndex].types.push({ type: item.types, quantity: item.quantity });
+            }
+
+            return acc;
+          }, []).map((categoryData, index) => (
+            <li key={index} className="bg-gray-800 p-4 rounded-lg my-4 shadow-xl border border-gray-700">
+              <h3 className="font-bold text-lg pb-2 border-b border-gray-500 mb-2 text-yellow-400 uppercase">{categoryData.category}</h3>
+              <div className="flex flex-col gap-3 text-sm">
+                {categoryData.types.map((typeData, subIndex) => (
+                  <div key={subIndex} className="flex justify-between items-center p-2 bg-gray-700 rounded-md shadow-md">
+                    <p className="font-semibold text-gray-300 flex-1">{typeData.type}</p>
+                    <p className="text-gray-400 flex-1 text-center">{typeData.quantity}</p>
+                    <div className="flex gap-2">
+                      <button className="bg-blue-500 p-2 rounded-full" onClick={() => toggleEdit(categoryData.category, typeData.type)}>
+                        <FaEdit className="text-white" />
+                      </button>
+                      <button className="bg-red-500 p-2 rounded-full" onClick={() => deleteItem(categoryData.category, typeData.type)}>
+                        <FaTrash className="text-white" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </li>
+          ))
+        ) : (
+          <p className="text-center text-gray-400">No data</p>
+        )}
+      </ul>
+    </section>
+  );
+}
+
+export default DashBoard;
