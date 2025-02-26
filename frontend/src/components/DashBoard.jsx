@@ -129,7 +129,9 @@ function DashBoard() {
 
 
   return (
-    <section className="DashBoard_Page bg-gray-900 min-h-screen w-full p-4 text-white">
+    <section className="DashBoard_Page bg-gray-900 min-h-screen flex justify-center mx-auto w-full p-4 text-white">
+      <div className="w-lg">
+
       <div className="header w-full flex items-center mx-auto">
         <input
           type="text"
@@ -221,8 +223,8 @@ function DashBoard() {
                   </>
                 ) : (
                   <>
-                    <p className="text-gray-400 flex-1 text-center">{item.types}</p>
-                    <p className="text-gray-400 flex-1 text-center">{item.quantity}</p>
+                    <p className="text-gray-200 flex-1 text-center">{item.types}</p>
+                    <p className="text-gray-200 flex-1 text-center">{item.quantity}</p>
                     <button className="bg-blue-500 p-2 rounded-full cursor-pointer" onClick={() => toggleEdit(item._id, item.category, item.types, item.quantity)}>
                       <FaEdit className="text-white" />
                     </button>
@@ -236,6 +238,7 @@ function DashBoard() {
           </li>
         ))}
       </ul>
+      </div>
     </section>
   );
 }
